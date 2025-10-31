@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa"
 import CartWidget from "./CartWidget"

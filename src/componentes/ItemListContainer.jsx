@@ -1,5 +1,3 @@
-"use client"
-
 import { FaTrophy, FaFire, FaStar } from "react-icons/fa"
 
 const ItemListContainer = ({ greeting }) => {

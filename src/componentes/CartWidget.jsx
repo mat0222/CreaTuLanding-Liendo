@@ -1,5 +1,3 @@
-"use client"
-
 import { FaGamepad } from "react-icons/fa"
 
 const CartWidget = () => {
