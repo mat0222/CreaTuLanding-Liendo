@@ -1,16 +1,12 @@
 import { useState } from "react"
-import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa"
+import { Link } from "react-router-dom"
+import { FaBars, FaTimes } from "react-icons/fa"
 import CartWidget from "./CartWidget"
 
 const NavBar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeDropdown, setActiveDropdown] = useState(null)
 
-  const categories = {
-    juegos: ["PlayStation", "Xbox", "Nintendo"],
-    consolas: ["PlayStation", "Xbox", "Nintendo"],
-    perifericos: ["Mandos", "Accesorios", "Teclados", "Mouse", "Auriculares"],
-  }
+  const categories = ["juegos", "consolas", "perifericos"]
 
   const styles = {
     nav: {
@@ -57,45 +53,16 @@ const NavBar = () => {
       gap: "32px",
       alignItems: "center",
     },
-    menuItem: {
-      position: "relative",
-      color: "#e2e8f0",
-      fontSize: "14px",
-      fontWeight: "500",
-      cursor: "pointer",
-      transition: "color 0.3s",
-      display: "flex",
-      alignItems: "center",
-      gap: "4px",
-    },
-    dropdown: {
-      position: "absolute",
-      top: "100%",
-      left: 0,
-      marginTop: "8px",
-      backgroundColor: "rgba(30, 41, 59, 0.98)",
-      border: "1px solid rgba(6, 182, 212, 0.3)",
-      borderRadius: "8px",
-      padding: "8px",
-      minWidth: "160px",
-      boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
-    },
-    dropdownItem: {
-      padding: "8px 12px",
-      color: "#cbd5e1",
-      fontSize: "14px",
-      cursor: "pointer",
-      borderRadius: "4px",
-      transition: "all 0.2s",
-    },
     mobileButton: {
       display: "block",
       color: "#06b6d4",
       cursor: "pointer",
+      backgroundColor: "transparent",
+      border: "none",
     },
   }
 
-  // Media query for desktop
+  
   if (window.innerWidth >= 768) {
     styles.desktopMenu.display = "flex"
     styles.mobileButton.display = "none"
@@ -106,44 +73,39 @@ const NavBar = () => {
       <div style={styles.container}>
         <div style={styles.flexBetween}>
           {/* Logo */}
-          <div style={styles.logo}>
-            <img src="/logo.png" alt="GameTech" style={styles.logoImg} />
-            <span style={styles.brandText}>GAMETECH</span>
-          </div>
+          <Link
+            to="/"
+            style={{ textDecoration: "none" }}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <div style={styles.logo}>
+              <img src="/logo.png" alt="GameTech" style={styles.logoImg} />
+              <span style={styles.brandText}>GAMETECH</span>
+            </div>
+          </Link>
 
           {/* Desktop Menu */}
           <div style={styles.desktopMenu}>
-            {Object.entries(categories).map(([key, items]) => (
-              <div
-                key={key}
-                style={styles.menuItem}
-                onMouseEnter={() => setActiveDropdown(key)}
-                onMouseLeave={() => setActiveDropdown(null)}
+            {categories.map((categoria) => (
+              <Link
+                key={categoria}
+                to={`/categoria/${categoria}`}
+                style={{
+                  textDecoration: "none",
+                  color: "#e2e8f0",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  transition: "color 0.3s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "#06b6d4"
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "#e2e8f0"
+                }}
               >
-                <span style={{ textTransform: "capitalize" }}>{key}</span>
-                <FaChevronDown size={12} />
-
-                {activeDropdown === key && (
-                  <div style={styles.dropdown}>
-                    {items.map((item) => (
-                      <div
-                        key={item}
-                        style={styles.dropdownItem}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = "rgba(6, 182, 212, 0.1)"
-                          e.currentTarget.style.color = "#06b6d4"
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = "transparent"
-                          e.currentTarget.style.color = "#cbd5e1"
-                        }}
-                      >
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                <span style={{ textTransform: "capitalize" }}>{categoria}</span>
+              </Link>
             ))}
             <CartWidget />
           </div>
@@ -162,43 +124,29 @@ const NavBar = () => {
               borderTop: "1px solid rgba(6, 182, 212, 0.2)",
             }}
           >
-            {Object.entries(categories).map(([key, items]) => (
-              <div key={key} style={{ marginBottom: "16px" }}>
-                <div
-                  style={{
-                    ...styles.menuItem,
-                    justifyContent: "space-between",
-                    padding: "8px 0",
-                  }}
-                  onClick={() => setActiveDropdown(activeDropdown === key ? null : key)}
-                >
-                  <span style={{ textTransform: "capitalize" }}>{key}</span>
-                  <FaChevronDown
-                    size={12}
-                    style={{
-                      transform: activeDropdown === key ? "rotate(180deg)" : "rotate(0)",
-                      transition: "transform 0.3s",
-                    }}
-                  />
-                </div>
-                {activeDropdown === key && (
-                  <div style={{ paddingLeft: "16px", marginTop: "8px" }}>
-                    {items.map((item) => (
-                      <div
-                        key={item}
-                        style={{
-                          padding: "8px 0",
-                          color: "#94a3b8",
-                          fontSize: "14px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+            {categories.map((categoria) => (
+              <Link
+                key={categoria}
+                to={`/categoria/${categoria}`}
+                style={{
+                  textDecoration: "none",
+                  color: "#e2e8f0",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  display: "block",
+                  padding: "12px 0",
+                  transition: "color 0.3s",
+                }}
+                onClick={() => setMobileMenuOpen(false)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "#06b6d4"
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "#e2e8f0"
+                }}
+              >
+                <span style={{ textTransform: "capitalize" }}>{categoria}</span>
+              </Link>
             ))}
             <div style={{ marginTop: "16px" }}>
               <CartWidget />

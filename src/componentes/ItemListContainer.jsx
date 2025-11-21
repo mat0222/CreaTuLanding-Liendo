@@ -1,24 +1,87 @@
-import { FaTrophy, FaFire, FaStar } from "react-icons/fa"
+import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
+import ItemList from "./ItemList"
+import FilterButtons from "./FilterButtons"
+import { getProductosPorCategoria, getSubcategoriasPorCategoria } from "../data/mockData"
 
 const ItemListContainer = ({ greeting }) => {
-  const stats = [
-    { icon: FaTrophy, label: "+500 Juegos", color: "#06b6d4" },
-    { icon: FaFire, label: "Ofertas Hot", color: "#f59e0b" },
-    { icon: FaStar, label: "Top Rated", color: "#ec4899" },
-  ]
+  const { categoria } = useParams()
+  const [productos, setProductos] = useState([])
+  const [productosFiltrados, setProductosFiltrados] = useState([])
+  const [subcategorias, setSubcategorias] = useState([])
+  const [subcategoriaSeleccionada, setSubcategoriaSeleccionada] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    setSubcategoriaSeleccionada(null)
+    getProductosPorCategoria(categoria)
+      .then((data) => {
+        setProductos(data)
+        setProductosFiltrados(data)
+        if (categoria) {
+          const subcats = getSubcategoriasPorCategoria(categoria)
+          setSubcategorias(subcats)
+        } else {
+          setSubcategorias([])
+        }
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.error("Error al cargar productos:", error)
+        setLoading(false)
+      })
+  }, [categoria])
+
+  useEffect(() => {
+    if (subcategoriaSeleccionada === null) {
+      setProductosFiltrados(productos)
+    } else {
+      const filtrados = productos.filter(
+        (producto) => producto.subcategoria === subcategoriaSeleccionada
+      )
+      setProductosFiltrados(filtrados)
+    }
+  }, [subcategoriaSeleccionada, productos])
+
+  const handleFilterChange = (subcategoria) => {
+    setSubcategoriaSeleccionada(subcategoria)
+  }
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          padding: "80px 16px",
+          color: "#94a3b8",
+        }}
+      >
+        <p style={{ fontSize: "20px" }}>Cargando productos...</p>
+      </div>
+    )
+  }
+
+  const titulo = categoria
+    ? `${categoria.charAt(0).toUpperCase() + categoria.slice(1)}`
+    : "Todos los productos"
 
   return (
     <div
       style={{
+        minHeight: "100vh",
         background: "linear-gradient(to bottom, rgba(6, 182, 212, 0.1), transparent)",
-        padding: "80px 16px",
-        textAlign: "center",
       }}
     >
-      <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
+      <div
+        style={{
+          padding: "40px 16px 20px",
+          textAlign: "center",
+        }}
+      >
         <h1
           style={{
-            fontSize: "48px",
+            fontSize: "36px",
             fontWeight: "bold",
             marginBottom: "16px",
             background: "linear-gradient(to right, #06b6d4, #3b82f6)",
@@ -27,66 +90,27 @@ const ItemListContainer = ({ greeting }) => {
             backgroundClip: "text",
           }}
         >
-          {greeting}
+          {titulo}
         </h1>
-
-        <p
-          style={{
-            fontSize: "20px",
-            color: "#94a3b8",
-            marginBottom: "48px",
-          }}
-        >
-          Explora nuestras ofertas en consolas, videojuegos y accesorios
-        </p>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "24px",
-            marginTop: "48px",
-          }}
-        >
-          {stats.map((stat, index) => {
-            const Icon = stat.icon
-            return (
-              <div
-                key={index}
-                style={{
-                  backgroundColor: "rgba(30, 41, 59, 0.5)",
-                  border: "1px solid rgba(6, 182, 212, 0.2)",
-                  borderRadius: "12px",
-                  padding: "24px",
-                  transition: "all 0.3s",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)"
-                  e.currentTarget.style.borderColor = stat.color
-                  e.currentTarget.style.boxShadow = `0 10px 30px rgba(0, 0, 0, 0.5)`
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)"
-                  e.currentTarget.style.borderColor = "rgba(6, 182, 212, 0.2)"
-                  e.currentTarget.style.boxShadow = "none"
-                }}
-              >
-                <Icon size={32} color={stat.color} style={{ marginBottom: "12px" }} />
-                <p
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "600",
-                    color: "#e2e8f0",
-                  }}
-                >
-                  {stat.label}
-                </p>
-              </div>
-            )
-          })}
-        </div>
+        {greeting && (
+          <p
+            style={{
+              fontSize: "18px",
+              color: "#94a3b8",
+              marginBottom: "24px",
+            }}
+          >
+            {greeting}
+          </p>
+        )}
       </div>
+      <FilterButtons
+        categoria={categoria}
+        subcategorias={subcategorias}
+        subcategoriaSeleccionada={subcategoriaSeleccionada}
+        onFilterChange={handleFilterChange}
+      />
+      <ItemList productos={productosFiltrados} />
     </div>
   )
 }
