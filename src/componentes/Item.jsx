@@ -4,88 +4,25 @@ const Item = ({ producto }) => {
   return (
     <Link
       to={`/item/${producto.id}`}
-      style={{
-        textDecoration: "none",
-        color: "inherit",
-        display: "block",
-      }}
+      className="block no-underline text-inherit"
     >
-      <div
-        style={{
-          backgroundColor: "rgba(30, 41, 59, 0.5)",
-          border: "1px solid rgba(6, 182, 212, 0.2)",
-          borderRadius: "12px",
-          padding: "16px",
-          transition: "all 0.3s",
-          cursor: "pointer",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "translateY(-4px)"
-          e.currentTarget.style.borderColor = "#06b6d4"
-          e.currentTarget.style.boxShadow = "0 10px 30px rgba(6, 182, 212, 0.3)"
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "translateY(0)"
-          e.currentTarget.style.borderColor = "rgba(6, 182, 212, 0.2)"
-          e.currentTarget.style.boxShadow = "none"
-        }}
-      >
+      <div className="bg-slate-800/50 border border-cyan-500/20 rounded-xl p-4 transition-all duration-300 cursor-pointer h-full flex flex-col hover:-translate-y-1 hover:border-cyan-500 hover:shadow-[0_10px_30px_rgba(6,182,212,0.3)]">
         <img
           src={producto.imagen}
           alt={producto.nombre}
-          style={{
-            width: "100%",
-            height: "200px",
-            objectFit: "cover",
-            borderRadius: "8px",
-            marginBottom: "12px",
-          }}
+          className="w-full h-48 object-cover rounded-lg mb-3"
         />
-        <h3
-          style={{
-            fontSize: "18px",
-            fontWeight: "600",
-            color: "#e2e8f0",
-            marginBottom: "8px",
-          }}
-        >
+        <h3 className="text-lg font-semibold text-slate-200 mb-2 line-clamp-2">
           {producto.nombre}
         </h3>
-        <p
-          style={{
-            fontSize: "14px",
-            color: "#94a3b8",
-            marginBottom: "12px",
-            flexGrow: 1,
-          }}
-        >
+        <p className="text-sm text-slate-400 mb-3 flex-grow line-clamp-2">
           {producto.descripcion.substring(0, 80)}...
         </p>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "24px",
-              fontWeight: "bold",
-              color: "#06b6d4",
-            }}
-          >
+        <div className="flex justify-between items-center">
+          <span className="text-2xl font-bold text-cyan-500">
             ${producto.precio}
           </span>
-          <span
-            style={{
-              fontSize: "12px",
-              color: "#64748b",
-            }}
-          >
+          <span className="text-xs text-slate-500">
             Stock: {producto.stock}
           </span>
         </div>
@@ -95,5 +32,3 @@ const Item = ({ producto }) => {
 }
 
 export default Item
-
-

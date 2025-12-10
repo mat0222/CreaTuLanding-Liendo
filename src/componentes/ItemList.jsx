@@ -1,31 +1,24 @@
 import Item from "./Item"
 
 const ItemList = ({ productos }) => {
-  if (productos.length === 0) {
+  if (!productos || productos.length === 0) {
     return (
-      <div
-        style={{
-          textAlign: "center",
-          padding: "80px 16px",
-          color: "#94a3b8",
-        }}
-      >
-        <p style={{ fontSize: "20px" }}>No se encontraron productos</p>
+      <div className="min-h-[60vh] flex items-center justify-center px-4">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🛒</div>
+          <p className="text-2xl font-semibold text-slate-300 mb-2">
+            No se encontraron productos
+          </p>
+          <p className="text-slate-400">
+            Intenta con otra categoría o verifica la conexión
+          </p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-        gap: "24px",
-        padding: "40px 16px",
-        maxWidth: "1280px",
-        margin: "0 auto",
-      }}
-    >
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto">
       {productos.map((producto) => (
         <Item key={producto.id} producto={producto} />
       ))}
@@ -34,5 +27,3 @@ const ItemList = ({ productos }) => {
 }
 
 export default ItemList
-
-

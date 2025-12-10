@@ -1,40 +1,26 @@
-import { FaGamepad } from "react-icons/fa"
+import { FaShoppingCart } from "react-icons/fa"
+import { Link } from "react-router-dom"
+import { useCart } from "../context/CartContext"
 
 const CartWidget = () => {
+  const { getTotalItems } = useCart()
+  const totalItems = getTotalItems()
+
   return (
-    <div
-      style={{
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        gap: "8px",
-        cursor: "pointer",
-      }}
+    <Link
+      to="/cart"
+      className="relative flex items-center gap-2 cursor-pointer"
     >
-      <FaGamepad
+      <FaShoppingCart
         size={24}
-        color="#06b6d4"
-        style={{ transition: "transform 0.3s" }}
-        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
-        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        className="text-cyan-500 transition-transform duration-300 hover:scale-110"
       />
-      <span
-        style={{
-          position: "absolute",
-          top: "-8px",
-          right: "-8px",
-          backgroundColor: "#06b6d4",
-          color: "white",
-          borderRadius: "50%",
-          padding: "2px 6px",
-          fontSize: "12px",
-          fontWeight: "bold",
-          animation: "pulse 2s infinite",
-        }}
-      >
-        3
-      </span>
-    </div>
+      {totalItems > 0 && (
+        <span className="absolute -top-2 -right-2 bg-cyan-500 text-white rounded-full px-1.5 py-0.5 text-xs font-bold animate-pulse min-w-[20px] text-center">
+          {totalItems}
+        </span>
+      )}
+    </Link>
   )
 }
 

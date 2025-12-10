@@ -4,42 +4,14 @@ const FilterButtons = ({ categoria, subcategorias, subcategoriaSeleccionada, onF
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "12px",
-        justifyContent: "center",
-        padding: "20px 16px",
-        maxWidth: "1280px",
-        margin: "0 auto",
-      }}
-    >
+    <div className="flex flex-wrap gap-3 justify-center py-5 px-4 max-w-7xl mx-auto">
       <button
         onClick={() => onFilterChange(null)}
-        style={{
-          backgroundColor: subcategoriaSeleccionada === null ? "#06b6d4" : "rgba(30, 41, 59, 0.5)",
-          color: subcategoriaSeleccionada === null ? "#fff" : "#e2e8f0",
-          border: "1px solid rgba(6, 182, 212, 0.3)",
-          borderRadius: "8px",
-          padding: "8px 16px",
-          fontSize: "14px",
-          fontWeight: "500",
-          cursor: "pointer",
-          transition: "all 0.2s",
-        }}
-        onMouseEnter={(e) => {
-          if (subcategoriaSeleccionada !== null) {
-            e.currentTarget.style.backgroundColor = "rgba(6, 182, 212, 0.2)"
-            e.currentTarget.style.borderColor = "#06b6d4"
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (subcategoriaSeleccionada !== null) {
-            e.currentTarget.style.backgroundColor = "rgba(30, 41, 59, 0.5)"
-            e.currentTarget.style.borderColor = "rgba(6, 182, 212, 0.3)"
-          }
-        }}
+        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+          subcategoriaSeleccionada === null
+            ? "bg-cyan-500 text-white"
+            : "bg-slate-800/50 text-slate-200 border border-cyan-500/30 hover:bg-cyan-500/20 hover:border-cyan-500"
+        }`}
       >
         Todos
       </button>
@@ -47,30 +19,11 @@ const FilterButtons = ({ categoria, subcategorias, subcategoriaSeleccionada, onF
         <button
           key={subcategoria}
           onClick={() => onFilterChange(subcategoria)}
-          style={{
-            backgroundColor:
-              subcategoriaSeleccionada === subcategoria ? "#06b6d4" : "rgba(30, 41, 59, 0.5)",
-            color: subcategoriaSeleccionada === subcategoria ? "#fff" : "#e2e8f0",
-            border: "1px solid rgba(6, 182, 212, 0.3)",
-            borderRadius: "8px",
-            padding: "8px 16px",
-            fontSize: "14px",
-            fontWeight: "500",
-            cursor: "pointer",
-            transition: "all 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            if (subcategoriaSeleccionada !== subcategoria) {
-              e.currentTarget.style.backgroundColor = "rgba(6, 182, 212, 0.2)"
-              e.currentTarget.style.borderColor = "#06b6d4"
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (subcategoriaSeleccionada !== subcategoria) {
-              e.currentTarget.style.backgroundColor = "rgba(30, 41, 59, 0.5)"
-              e.currentTarget.style.borderColor = "rgba(6, 182, 212, 0.3)"
-            }
-          }}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+            subcategoriaSeleccionada === subcategoria
+              ? "bg-cyan-500 text-white"
+              : "bg-slate-800/50 text-slate-200 border border-cyan-500/30 hover:bg-cyan-500/20 hover:border-cyan-500"
+          }`}
         >
           {subcategoria}
         </button>
@@ -80,5 +33,3 @@ const FilterButtons = ({ categoria, subcategorias, subcategoriaSeleccionada, onF
 }
 
 export default FilterButtons
-
-

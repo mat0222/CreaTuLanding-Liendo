@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { FaBars, FaTimes } from "react-icons/fa"
 import CartWidget from "./CartWidget"
 
@@ -8,147 +8,75 @@ const NavBar = () => {
 
   const categories = ["juegos", "consolas", "perifericos"]
 
-  const styles = {
-    nav: {
-      position: "sticky",
-      top: 0,
-      zIndex: 50,
-      backgroundColor: "rgba(15, 23, 42, 0.95)",
-      backdropFilter: "blur(10px)",
-      borderBottom: "1px solid rgba(6, 182, 212, 0.2)",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
-    },
-    container: {
-      maxWidth: "1280px",
-      margin: "0 auto",
-      padding: "0 16px",
-    },
-    flexBetween: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      height: "64px",
-    },
-    logo: {
-      display: "flex",
-      alignItems: "center",
-      gap: "12px",
-      cursor: "pointer",
-    },
-    logoImg: {
-      height: "40px",
-      width: "auto",
-      filter: "drop-shadow(0 0 10px rgba(6, 182, 212, 0.5))",
-    },
-    brandText: {
-      fontSize: "24px",
-      fontWeight: "bold",
-      background: "linear-gradient(to right, #06b6d4, #3b82f6, #ec4899)",
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      backgroundClip: "text",
-    },
-    desktopMenu: {
-      display: "none",
-      gap: "32px",
-      alignItems: "center",
-    },
-    mobileButton: {
-      display: "block",
-      color: "#06b6d4",
-      cursor: "pointer",
-      backgroundColor: "transparent",
-      border: "none",
-    },
-  }
-
-  
-  if (window.innerWidth >= 768) {
-    styles.desktopMenu.display = "flex"
-    styles.mobileButton.display = "none"
-  }
-
   return (
-    <nav style={styles.nav}>
-      <div style={styles.container}>
-        <div style={styles.flexBetween}>
+    <nav className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-lg border-b border-cyan-500/20 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link
             to="/"
-            style={{ textDecoration: "none" }}
+            className="flex items-center gap-3 no-underline"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <div style={styles.logo}>
-              <img src="/logo.png" alt="GameTech" style={styles.logoImg} />
-              <span style={styles.brandText}>GAMETECH</span>
-            </div>
+            <img
+              src="/logo.png"
+              alt="GameTech"
+              className="h-10 w-auto drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]"
+            />
+            <span className="text-2xl font-bold bg-gradient-to-r from-cyan-500 via-blue-500 to-pink-500 bg-clip-text text-transparent">
+              GAMETECH
+            </span>
           </Link>
 
           {/* Desktop Menu */}
-          <div style={styles.desktopMenu}>
+          <div className="hidden md:flex items-center gap-8">
             {categories.map((categoria) => (
-              <Link
+              <NavLink
                 key={categoria}
                 to={`/categoria/${categoria}`}
-                style={{
-                  textDecoration: "none",
-                  color: "#e2e8f0",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  transition: "color 0.3s",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "#06b6d4"
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "#e2e8f0"
-                }}
+                className={({ isActive }) =>
+                  `text-sm font-medium capitalize transition-colors duration-300 no-underline ${
+                    isActive
+                      ? "text-cyan-500 border-b-2 border-cyan-500 pb-1"
+                      : "text-slate-200 hover:text-cyan-500"
+                  }`
+                }
               >
-                <span style={{ textTransform: "capitalize" }}>{categoria}</span>
-              </Link>
+                {categoria}
+              </NavLink>
             ))}
             <CartWidget />
           </div>
 
           {/* Mobile Menu Button */}
-          <button style={styles.mobileButton} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button
+            className="md:hidden text-cyan-500 bg-transparent border-none cursor-pointer p-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
             {mobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div
-            style={{
-              padding: "16px 0",
-              borderTop: "1px solid rgba(6, 182, 212, 0.2)",
-            }}
-          >
+          <div className="py-4 border-t border-cyan-500/20 md:hidden">
             {categories.map((categoria) => (
-              <Link
+              <NavLink
                 key={categoria}
                 to={`/categoria/${categoria}`}
-                style={{
-                  textDecoration: "none",
-                  color: "#e2e8f0",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  display: "block",
-                  padding: "12px 0",
-                  transition: "color 0.3s",
-                }}
+                className={({ isActive }) =>
+                  `block text-sm font-medium capitalize transition-colors duration-300 py-3 no-underline ${
+                    isActive
+                      ? "text-cyan-500 border-l-4 border-cyan-500 pl-4"
+                      : "text-slate-200 hover:text-cyan-500"
+                  }`
+                }
                 onClick={() => setMobileMenuOpen(false)}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "#06b6d4"
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "#e2e8f0"
-                }}
               >
-                <span style={{ textTransform: "capitalize" }}>{categoria}</span>
-              </Link>
+                {categoria}
+              </NavLink>
             ))}
-            <div style={{ marginTop: "16px" }}>
+            <div className="mt-4">
               <CartWidget />
             </div>
           </div>

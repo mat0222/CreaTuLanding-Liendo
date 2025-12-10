@@ -1,7 +1,8 @@
 import { useState } from "react"
 
-const ItemCount = ({ stock, initial = 1, onAdd }) => {
+const ItemCount = ({ stock, initial = 1, onAdd, accesorios = [] }) => {
   const [cantidad, setCantidad] = useState(initial)
+  const [added, setAdded] = useState(false)
 
   const incrementar = () => {
     if (cantidad < stock) {
@@ -17,113 +18,53 @@ const ItemCount = ({ stock, initial = 1, onAdd }) => {
 
   const handleAddToCart = () => {
     if (onAdd) {
-      onAdd(cantidad)
+      onAdd(cantidad, accesorios)
+      setAdded(true)
     }
   }
 
+  if (added) {
+    return (
+      <div className="mt-6 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-center">
+        <p className="text-green-400 font-semibold">
+          ✓ Producto agregado al carrito
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "16px",
-        marginTop: "24px",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "16px",
-        }}
-      >
+    <div className="flex flex-col gap-4 mt-6">
+      <div className="flex items-center gap-4">
         <button
           onClick={decrementar}
           disabled={cantidad <= 1}
-          style={{
-            backgroundColor: cantidad <= 1 ? "rgba(100, 116, 139, 0.3)" : "#06b6d4",
-            color: "#fff",
-            border: "none",
-            borderRadius: "8px",
-            width: "40px",
-            height: "40px",
-            fontSize: "20px",
-            cursor: cantidad <= 1 ? "not-allowed" : "pointer",
-            transition: "all 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            if (cantidad > 1) {
-              e.currentTarget.style.backgroundColor = "#0891b2"
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (cantidad > 1) {
-              e.currentTarget.style.backgroundColor = "#06b6d4"
-            }
-          }}
+          className={`w-10 h-10 rounded-lg text-xl font-semibold transition-all duration-200 ${
+            cantidad <= 1
+              ? "bg-slate-700/30 text-slate-500 cursor-not-allowed"
+              : "bg-cyan-500 text-white hover:bg-cyan-600"
+          }`}
         >
           -
         </button>
-        <span
-          style={{
-            fontSize: "24px",
-            fontWeight: "600",
-            color: "#e2e8f0",
-            minWidth: "60px",
-            textAlign: "center",
-          }}
-        >
+        <span className="text-2xl font-semibold text-slate-200 min-w-[60px] text-center">
           {cantidad}
         </span>
         <button
           onClick={incrementar}
           disabled={cantidad >= stock}
-          style={{
-            backgroundColor: cantidad >= stock ? "rgba(100, 116, 139, 0.3)" : "#06b6d4",
-            color: "#fff",
-            border: "none",
-            borderRadius: "8px",
-            width: "40px",
-            height: "40px",
-            fontSize: "20px",
-            cursor: cantidad >= stock ? "not-allowed" : "pointer",
-            transition: "all 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            if (cantidad < stock) {
-              e.currentTarget.style.backgroundColor = "#0891b2"
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (cantidad < stock) {
-              e.currentTarget.style.backgroundColor = "#06b6d4"
-            }
-          }}
+          className={`w-10 h-10 rounded-lg text-xl font-semibold transition-all duration-200 ${
+            cantidad >= stock
+              ? "bg-slate-700/30 text-slate-500 cursor-not-allowed"
+              : "bg-cyan-500 text-white hover:bg-cyan-600"
+          }`}
         >
           +
         </button>
       </div>
       <button
         onClick={handleAddToCart}
-        style={{
-          backgroundColor: "#06b6d4",
-          color: "#fff",
-          border: "none",
-          borderRadius: "8px",
-          padding: "12px 24px",
-          fontSize: "16px",
-          fontWeight: "600",
-          cursor: "pointer",
-          transition: "all 0.2s",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = "#0891b2"
-          e.currentTarget.style.transform = "translateY(-2px)"
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = "#06b6d4"
-          e.currentTarget.style.transform = "translateY(0)"
-        }}
+        className="bg-cyan-500 text-white rounded-lg px-6 py-3 text-base font-semibold cursor-pointer transition-all duration-200 hover:bg-cyan-600 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-cyan-500/50"
       >
         Agregar al carrito
       </button>
@@ -132,5 +73,3 @@ const ItemCount = ({ stock, initial = 1, onAdd }) => {
 }
 
 export default ItemCount
-
-
